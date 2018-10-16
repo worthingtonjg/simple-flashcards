@@ -70,7 +70,7 @@ public class PrebuiltMath
         {
             for(int y = 2; y <= 12; y++)
             {
-                if(x % y == 0 && x != y)
+                if(x % y == 0 && x != y && x / y <= 12)
                 {
                     delimited += x.ToString() + " % " + y.ToString() + "\n";
                 }
