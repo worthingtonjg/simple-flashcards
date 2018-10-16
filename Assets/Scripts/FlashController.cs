@@ -22,9 +22,10 @@ public class FlashController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		if(LoadController.FlashCards != null)
+		if(LoadController.FlashCards != null || LoadController.FlashCards.Count == 0)
 		{
-			FlashCards = LoadController.FlashCards;
+			FlashCards = new List<string>();
+			FlashCards.AddRange(LoadController.FlashCards);
 		}
 
 		displayText = DisplayTextObject.GetComponent<Text>();

@@ -24,11 +24,12 @@ public class LoadController : MonoBehaviour
 		string delimited = flashCardsText.text;
 		print(delimited);
 
+		if(string.IsNullOrEmpty(delimited)) return;
+		
 		string[] stringSeparators = new string[] { "\n" };
 		string[] lines = delimited.Split(stringSeparators, StringSplitOptions.None);
-
 		FlashCards = lines.ToList();
-
+	
 		SceneManager.LoadScene("Main");
 	}
 }
