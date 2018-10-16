@@ -22,7 +22,7 @@ public class FlashController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		if(LoadController.FlashCards != null || LoadController.FlashCards.Count == 0)
+		if(LoadController.FlashCards != null && LoadController.FlashCards.Count > 0)
 		{
 			FlashCards = new List<string>();
 			FlashCards.AddRange(LoadController.FlashCards);
@@ -37,11 +37,6 @@ public class FlashController : MonoBehaviour
 		noPile = new List<string>();
 		
 		NextCard();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
 	public void Yes()
@@ -80,12 +75,25 @@ public class FlashController : MonoBehaviour
 			return false;
 		}
 
-		Random rand = new Random();
-		currentCard = Random.Range(0, FlashCards.Count);
+		if(LoadController.RandomizeFlashCards)
+		{
+			Random rand = new Random();
+			currentCard = Random.Range(0, FlashCards.Count);
+		}
+		else
+		{
+			currentCard = 0;
+		}
+
 		print(currentCard);
 		print(FlashCards[currentCard]);
 		displayText.text = FlashCards[currentCard];
 
 		return true;
+	}
+
+	public void ChooseDeck()
+	{
+		SceneManager.LoadScene("Load");
 	}
 }
