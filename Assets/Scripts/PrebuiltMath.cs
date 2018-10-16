@@ -11,6 +11,7 @@ public class PrebuiltMath
         Addition();
         Subtraction();
         Multiplication();
+        Division();
     }
 
     public void Addition()
@@ -36,7 +37,10 @@ public class PrebuiltMath
         {
             for(int y = 0; y <= 12; y++)
             {
-                delimited += x.ToString() + " - " + y.ToString() + "\n";
+                if(y <= x)
+                {
+                    delimited += x.ToString() + " - " + y.ToString() + "\n";
+                }
             }
         }
 
@@ -57,4 +61,23 @@ public class PrebuiltMath
 
         Result.Add("Math - Multiplication", delimited);
     }
+
+    public void Division()
+    {
+        string delimited = string.Empty;
+        
+        for(int x = 2; x <= 144; x++)
+        {
+            for(int y = 2; y <= 12; y++)
+            {
+                if(x % y == 0 && x != y)
+                {
+                    delimited += x.ToString() + " % " + y.ToString() + "\n";
+                }
+            }
+        }
+
+        Result.Add("Math - Division", delimited);
+    }
+
 }
