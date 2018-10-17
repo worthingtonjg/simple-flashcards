@@ -478,7 +478,7 @@ GameObject:
   - component: {fileID: 545772975}
   - component: {fileID: 545772974}
   m_Layer: 0
-  m_Name: FlashController
+  m_Name: GamePlayController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -498,16 +498,15 @@ MonoBehaviour:
   DisplayTextObject: {fileID: 947550940}
   RemainingTextObject: {fileID: 1897210969}
   FlashCards:
-  - am
-  - sam
-  - can
-  - fan
-  - wam
-  - lame
-  - okay
-  - bye
-  - yep
-  - cool
+  - Text: this
+  - Text: is
+  - Text: a
+  - Text: test
+  - Text: of
+  - Text: the
+  - Text: emergency
+  - Text: broadcast
+  - Text: system
 --- !u!4 &545772975
 Transform:
   m_ObjectHideFlags: 0

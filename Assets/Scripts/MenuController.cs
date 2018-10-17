@@ -6,9 +6,9 @@ using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
-public class LoadController : MonoBehaviour 
+public class MenuController : MonoBehaviour 
 {
-	public static List<string> FlashCards;
+	public static List<FlashCard> FlashCards;
 
 	public static bool RandomizeFlashCards;
 
@@ -29,13 +29,13 @@ public class LoadController : MonoBehaviour
 	void Start()
 	{
 		PrebuiltDecks = new Dictionary<string, string>();
-		RandomizeFlashCards = true;
 
 		customFlashCardsText = CustomFlashCardsTextObject.GetComponent<InputField>();
 		prebuiltFlashCardsDropDown = PrebuiltFlashCardsDropDown.GetComponent<Dropdown>();
 		randomizeCheckbox = RandomizeCheckbox.GetComponent<Toggle>();
 
 		CustomFlashCardsTextObject.SetActive(false);
+		RandomizeFlashCards = randomizeCheckbox.isOn;
 
 		LoadPrebuiltCards();
 	}
@@ -66,15 +66,13 @@ public class LoadController : MonoBehaviour
 			delimited = PrebuiltDecks[selectedDeck];
 		}
 		
-		print(delimited);
-
 		if(string.IsNullOrEmpty(delimited)) return;
 		
 		string[] stringSeparators = new string[] { "\n" };
 		string[] lines = delimited.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
-		FlashCards = lines.Select(s => s.Trim()).ToList();
+		FlashCards = lines.Select(s => new FlashCard(s.Trim())).ToList();
 	
-		SceneManager.LoadScene("Main");
+		SceneManager.LoadScene("02GamePlay");
 	}
 
 	private void LoadPrebuiltCards()
