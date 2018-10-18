@@ -10,18 +10,30 @@ public class GamePlayController : MonoBehaviour
 	public GameObject DisplayTextObject;
 	public GameObject RemainingTextObject;
 	public List<FlashCard> FlashCards;
-	
+	public GameObject TimerParent;
+	public GameObject Timer;
+
 	private Text displayText;
 	private Text remainingText;
 	private int total;
 	private List<FlashCard> yesPile;
 	private List<FlashCard> noPile;
-	public FlashCard currentCard;
-	public FlashCard lastCard;
+	private FlashCard currentCard;
+	private FlashCard lastCard;
+	private float startTime;
+	private float elapsedTime;
+	private Image timer;
 
 	// Use this for initialization
 	void Start () 
 	{
+		timer = Timer.GetComponent<Image>();
+
+		if(MenuController.TimerSeconds == 0)
+		{
+			TimerParent.SetActive(false);
+		}
+
 		if(MenuController.FlashCards != null && MenuController.FlashCards.Count > 0)
 		{
 			FlashCards = new List<FlashCard>();
@@ -37,6 +49,19 @@ public class GamePlayController : MonoBehaviour
 		noPile = new List<FlashCard>();
 		
 		NextCard();
+
+		startTime = Time.time;
+	}
+
+	void Update()
+	{
+		elapsedTime = Time.time - startTime;
+
+		timer.fillAmount = elapsedTime / MenuController.TimerSeconds;
+		if(MenuController.TimerSeconds > 0 && elapsedTime > MenuController.TimerSeconds)
+		{
+			No();
+		}
 	}
 
     public void ChooseDeck()
@@ -91,6 +116,7 @@ public class GamePlayController : MonoBehaviour
 
         displayText.text = currentCard.Text;
         remainingText.text = "Remaining: " + CardsRemaining() + " of " + total;
+		startTime = Time.time;
     }
 
 	private int CardsRemaining()

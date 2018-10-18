@@ -8,41 +8,79 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour 
 {
+	public static string SelectedDeck;
+
 	public static List<FlashCard> FlashCards;
 
-	public static bool RandomizeFlashCards;
+	public static bool RandomizeFlashCards = false;
 
-	public GameObject CustomFlashCardsTextObject;
+	public static int TimerSeconds;
 
 	public GameObject PrebuiltFlashCardsDropDown;	
 
 	public GameObject RandomizeCheckbox;
 
-	private InputField customFlashCardsText;
+	public GameObject TimerCheckbox;
+
+	public GameObject TimerInput;
+
+	public GameObject CustomFlashCardsTextObject;
+
+	public GameObject Timer;
+
+	public int timerDefault = 5;
+
+	public Dictionary<string, string> PrebuiltDecks;
 
 	private Dropdown prebuiltFlashCardsDropDown;
 
 	private Toggle randomizeCheckbox;
 
-	public Dictionary<string, string> PrebuiltDecks;
+	private Toggle timerCheckbox;
+
+	private InputField timerInput;
+
+	private InputField customFlashCardsText;
 
 	void Start()
+    {
+        PrebuiltDecks = new Dictionary<string, string>();
+
+        prebuiltFlashCardsDropDown = PrebuiltFlashCardsDropDown.GetComponent<Dropdown>();
+        randomizeCheckbox = RandomizeCheckbox.GetComponent<Toggle>();
+        timerCheckbox = TimerCheckbox.GetComponent<Toggle>();
+        timerInput = TimerInput.GetComponent<InputField>();
+        customFlashCardsText = CustomFlashCardsTextObject.GetComponent<InputField>();
+
+        LoadPrebuiltCards();
+		RestorePrebuiltDeckSelection();
+		randomizeCheckbox.isOn = RandomizeFlashCards;
+		timerCheckbox.isOn = TimerSeconds > 0;
+		timerInput.text = TimerSeconds == 0 ? timerDefault.ToString() : TimerSeconds.ToString();
+		TimerInput.SetActive(timerCheckbox.isOn);;
+        CustomFlashCardsTextObject.SetActive(SelectedDeck == "Custom");
+    }
+
+    private void RestorePrebuiltDeckSelection()
+    {
+        if (!string.IsNullOrEmpty(SelectedDeck))
+        {
+            var option = prebuiltFlashCardsDropDown.options.FirstOrDefault(o => o.text == SelectedDeck);
+            if (option != null)
+            {
+				prebuiltFlashCardsDropDown.value = prebuiltFlashCardsDropDown.options.IndexOf(option);
+            }
+        }
+    }
+
+    public void RandomizeCheckboxChanged()
 	{
-		PrebuiltDecks = new Dictionary<string, string>();
-
-		customFlashCardsText = CustomFlashCardsTextObject.GetComponent<InputField>();
-		prebuiltFlashCardsDropDown = PrebuiltFlashCardsDropDown.GetComponent<Dropdown>();
-		randomizeCheckbox = RandomizeCheckbox.GetComponent<Toggle>();
-
-		CustomFlashCardsTextObject.SetActive(false);
 		RandomizeFlashCards = randomizeCheckbox.isOn;
-
-		LoadPrebuiltCards();
 	}
 
-	public void RandomizeCheckboxChanged()
+	public void TimerCheckboxChanged()
 	{
-		RandomizeFlashCards = randomizeCheckbox.isOn;
+		TimerInput.SetActive(timerCheckbox.isOn);;
 	}
 
 	public void PrebuiltDeckChanged()
@@ -54,6 +92,7 @@ public class MenuController : MonoBehaviour
 	public void StartGame()
 	{
 		string selectedDeck = prebuiltFlashCardsDropDown.options[prebuiltFlashCardsDropDown.value].text;
+		SelectedDeck = selectedDeck;
 
 		string delimited = string.Empty;
 
@@ -66,6 +105,20 @@ public class MenuController : MonoBehaviour
 			delimited = PrebuiltDecks[selectedDeck];
 		}
 		
+		if(timerCheckbox.isOn && !string.IsNullOrEmpty(timerInput.text))
+		{
+			int timeInSeconds = 0;
+			int.TryParse(timerInput.text, out timeInSeconds);
+			if(timeInSeconds < 0) timeInSeconds = 0;
+			TimerSeconds = timeInSeconds;
+		}
+		else
+		{
+			TimerSeconds = 0;
+		}
+		
+		print(TimerSeconds);
+
 		if(string.IsNullOrEmpty(delimited)) return;
 		
 		string[] stringSeparators = new string[] { "\n" };
@@ -78,8 +131,8 @@ public class MenuController : MonoBehaviour
 	private void LoadPrebuiltCards()
 	{
 		Alphabet();
-		Numbers();
 		SightWords();
+		Numbers();
 		Math();
 		Custom();
 

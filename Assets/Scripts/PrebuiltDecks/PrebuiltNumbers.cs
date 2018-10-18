@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 public class PrebuiltNumbers
 {
@@ -8,41 +9,33 @@ public class PrebuiltNumbers
     {
         Result = new Dictionary<string, string>();
 
-        Numbers0to10();    
-        Numbers0to20();    
-        Numbers0to100();    
-    }
-
-    private void Numbers0to10()
-    {
-        string delimited = string.Empty;
-        for(int i = 0; i <= 10; i++)
-        {
-            delimited += i.ToString() + "\n";
-        }
-
-        Result.Add("Numbers 0 to 10", delimited);
-    }
-
-    private void Numbers0to20()
-    {
-        string delimited = string.Empty;
-        for(int i = 0; i <= 20; i++)
-        {
-            delimited += i.ToString() + "\n";
-        }
-
-        Result.Add("Numbers 0 to 20", delimited);
+        CountBy("Numbers 0 to 10", 1, 0, 10);
+        CountBy("Numbers 0 to 20", 1, 0, 20);
+        CountBy("Numbers 0 to 100", 1, 0, 100);
+        CountBy("Count by Twos", 2, 0, 100);        
+        CountBy("Count by Threes", 3, 0, 100);        
+        CountBy("Count by Fours", 4, 0, 100);        
+        CountBy("Count by Fives", 5, 0, 100);        
+        CountBy("Count by Sixes", 6, 0, 100);        
+        CountBy("Count by Sevens", 7, 0, 100);        
+        CountBy("Count by Eights", 8, 0, 100);        
+        CountBy("Count by Nines", 9, 0, 100);        
+        CountBy("Count by Tens", 10, 0, 100);        
+        CountBy("Count by Hundreds", 100, 0, 1000);
 
     }
-    private void Numbers0to100()
+    
+    private void CountBy(string name, int countBy, int countFrom, int countTo)
     {
         string delimited = string.Empty;
-        for(int i = 0; i <= 100; i++)
+        for(int i = countFrom; i <= countTo; i++)
         {
-            delimited += i.ToString() + "\n";
+            if(i % countBy == 0)
+            {
+                delimited += i.ToString() + "\n";
+            }
         }
-
-        Result.Add("Numbers 0 to 100", delimited);
-    }    
+        
+        Result.Add(name, delimited);
+    }
 }
