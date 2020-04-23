@@ -3,11 +3,11 @@ using System.Linq;
 
 public class PrebuiltNumbers
 {
-    public Dictionary<string, string> Result { get; set; }
+    public Dictionary<string, List<string>> Result { get; set; }
 
     public PrebuiltNumbers()
     {
-        Result = new Dictionary<string, string>();
+        Result = new Dictionary<string, List<string>>();
 
         CountBy("Numbers 0 to 10", 1, 0, 10);
         CountBy("Numbers 0 to 20", 1, 0, 20);
@@ -36,6 +36,6 @@ public class PrebuiltNumbers
             }
         }
         
-        Result.Add(name, delimited);
+        Result.Add(name, new List<string> { delimited, null });
     }
 }

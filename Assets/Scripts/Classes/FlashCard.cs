@@ -4,11 +4,13 @@ using System;
 public class FlashCard
 {
     public string CardId;
-    public string Text;
-
-    public FlashCard(string text)
+    public string Question;
+    public string Answer;
+    
+    public FlashCard(string question, string answer)
     {
-        Text = text;
+        Question = question;
+        Answer = answer;
         CardId = Guid.NewGuid().ToString();
     }
 }

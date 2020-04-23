@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 public class PrebuiltAlphabet
 {
-    public Dictionary<string, string> Result { get; set; }
+    public Dictionary<string, List<string>> Result { get; set; }
 
     public PrebuiltAlphabet()
     {
-        Result = new Dictionary<string, string>();
+        Result = new Dictionary<string, List<string>>();
 
         UpperCaseAbc();    
         LowerCaseAbc();    
@@ -15,7 +15,7 @@ public class PrebuiltAlphabet
 	public void UpperCaseAbc()
 	{
 		Result.Add("Uppercase ABC's", 
-			@"A
+			new List<string> {@"A
 			B
 			C
 			D
@@ -40,13 +40,13 @@ public class PrebuiltAlphabet
 			W
 			X
 			Y
-			Z");	
+			Z", null});	
 	}
 
 	public void LowerCaseAbc()
 	{
 		Result.Add("Lowercase ABC's", 
-			@"a
+			new List<string> {@"a
 			b
 			c
 			d
@@ -71,7 +71,7 @@ public class PrebuiltAlphabet
 			w
 			x
 			y
-			z");	
+			z", null});	
 	}
 
       

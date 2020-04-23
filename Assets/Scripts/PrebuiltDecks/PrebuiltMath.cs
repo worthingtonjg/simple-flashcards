@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 public class PrebuiltMath
 {
-    public Dictionary<string, string> Result { get; set; }
+    public Dictionary<string, List<string>> Result { get; set; }
 
     public PrebuiltMath()
     {
-        Result = new Dictionary<string, string>();
+        Result = new Dictionary<string, List<string>>();
 
         Addition1();
         Addition2();
@@ -28,7 +28,8 @@ public class PrebuiltMath
 
     public void Addition1()
     {
-        string delimited = string.Empty;
+        string questions = string.Empty;
+        string answers = string.Empty;
         
         for(int x = 0; x <= 12; x++)
         {
@@ -36,18 +37,20 @@ public class PrebuiltMath
             {
                 if(x+y <= 10)
                 {
-                    delimited += x.ToString() + " + " + y.ToString() + "\n";
+                    questions += $"{x} + {y}\n";
+                    answers += $"{x} + {y} = {x+y}\n";
                 }
             }
         }
 
-        Result.Add("Math - Addition Easy", delimited);
+        Result.Add("Math - Addition Easy", new List<string> {questions, answers});
     }
 
 
     public void Addition2()
     {
-        string delimited = string.Empty;
+        string questions = string.Empty;
+        string answers = string.Empty;
         
         for(int x = 0; x <= 12; x++)
         {
@@ -55,17 +58,19 @@ public class PrebuiltMath
             {
                 if(x+y > 10 && x+y <= 20)
                 {
-                    delimited += x.ToString() + " + " + y.ToString() + "\n";
+                    questions += $"{x} + {y}\n";
+                    answers += $"{x} + {y} = {x+y}\n";
                 }
             }
         }
 
-        Result.Add("Math - Addition Intermediate", delimited);
+        Result.Add("Math - Addition Intermediate", new List<string> {questions, answers});
     }
 
     public void Subtraction()
     {
-        string delimited = string.Empty;
+        string questions = string.Empty;
+        string answers = string.Empty;
         
         for(int x = 1; x <= 12; x++)
         {
@@ -73,44 +78,50 @@ public class PrebuiltMath
             {
                 if(y <= x)
                 {
-                    delimited += x.ToString() + " - " + y.ToString() + "\n";
+                    questions += $"{x} - {y}\n";
+                    answers += $"{x} - {y} = {x-y}\n";
                 }
             }
         }
 
-        Result.Add("Math - Subtraction", delimited);
+        Result.Add("Math - Subtraction", new List<string> {questions, answers});
     }
 
     public void Multiplication()
     {
-        string delimited = string.Empty;
+        string questions = string.Empty;
+        string answers = string.Empty;
         
         for(int x = 0; x <= 12; x++)
         {
             for(int y = 0; y <= 12; y++)
             {
-                delimited += x.ToString() + " x " + y.ToString() + "\n";
+                    questions += $"{x} x {y}\n";
+                    answers += $"{x} x {y} = {x*y}\n";
             }
         }
 
-        Result.Add("Math - Multiplication", delimited);
+        Result.Add("Math - Multiplication", new List<string> {questions, answers});
     }
 
     public void MultiplicationBySet(string name, int set)
     {
-        string delimited = string.Empty;
+        string questions = string.Empty;
+        string answers = string.Empty;
         
         for(int y = 0; y <= 12; y++)
         {
-            delimited += set.ToString() + " x " + y.ToString() + "\n";
+            questions += $"{set} x {y}\n";
+            answers += $"{set} x {y} = {set*y}\n";
         }
 
-        Result.Add(name, delimited);
+        Result.Add(name, new List<string> {questions, answers});
     }
 
     public void Division()
     {
-        string delimited = string.Empty;
+        string questions = string.Empty;
+        string answers = string.Empty;
         
         for(int x = 2; x <= 144; x++)
         {
@@ -118,12 +129,13 @@ public class PrebuiltMath
             {
                 if(x % y == 0 && x != y && x / y <= 12)
                 {
-                    delimited += x.ToString() + " % " + y.ToString() + "\n";
+                    questions += $"{x} % {y}\n";
+                    answers += $"{x} % {y} = {x%y}\n";
                 }
             }
         }
 
-        Result.Add("Math - Division", delimited);
+        Result.Add("Math - Division", new List<string> {questions, answers});
     }
 
 }

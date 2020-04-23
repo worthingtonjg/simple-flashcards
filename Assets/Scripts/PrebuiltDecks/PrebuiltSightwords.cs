@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 public class PrebuiltSightwords
 {
-    public Dictionary<string, string> Result { get; set; }
+    public Dictionary<string, List<string>> Result { get; set; }
 
     public PrebuiltSightwords()
     {
-        Result = new Dictionary<string, string>();
+        Result = new Dictionary<string, List<string>>();
 
         LevelA();
         LevelB();
@@ -17,7 +17,7 @@ public class PrebuiltSightwords
     public void LevelA()
 	{
 		Result.Add("Sight Words - Level A", 
-			@"am
+			new List<string> {@"am
 			at
 			can
 			go
@@ -26,14 +26,14 @@ public class PrebuiltSightwords
 			me
 			see
 			the
-			to");
+			to", null});
 
 	}
 
 	public void LevelB()
 	{
 		Result.Add("Sight Words - Level B", 
-			@"dad
+			new List<string> {@"dad
 			he
 			in
 			it
@@ -42,13 +42,13 @@ public class PrebuiltSightwords
 			my
 			on
 			up
-			we");
+			we", null});
 	}
 
 	public void LevelC()
 	{
 		Result.Add("Sight Words - Level C", 
-			@"and
+			new List<string> {@"and
 			are
 			come
 			for
@@ -57,13 +57,13 @@ public class PrebuiltSightwords
 			not
 			play
 			said
-			you");
+			you", null});
 	}
 
 	public void LevelD()
 	{
 		Result.Add("Sight Words - Level D", 
-			@"day
+			new List<string> {@"day
 			down
 			into
 			looking
@@ -72,7 +72,7 @@ public class PrebuiltSightwords
 			went
 			where
 			will
-			you");
+			you", null});
 	}	
 
 	      

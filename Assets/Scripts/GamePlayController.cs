@@ -12,6 +12,7 @@ public class GamePlayController : MonoBehaviour
 	public List<FlashCard> FlashCards;
 	public GameObject TimerParent;
 	public GameObject Timer;
+	public GameObject YesButton;
 
 	private Text displayText;
 	private Text remainingText;
@@ -55,12 +56,15 @@ public class GamePlayController : MonoBehaviour
 
 	void Update()
 	{
-		elapsedTime = Time.time - startTime;
-
-		timer.fillAmount = elapsedTime / MenuController.TimerSeconds;
-		if(MenuController.TimerSeconds > 0 && elapsedTime > MenuController.TimerSeconds)
+		if(YesButton.activeSelf)
 		{
-			No();
+			elapsedTime = Time.time - startTime;
+			timer.fillAmount = elapsedTime / MenuController.TimerSeconds;
+			
+			if(MenuController.TimerSeconds > 0 && elapsedTime > MenuController.TimerSeconds)
+			{
+				No();
+			}
 		}
 	}
 
@@ -81,18 +85,40 @@ public class GamePlayController : MonoBehaviour
 
 	public void No()
     {
+		if(YesButton.activeSelf == false)
+		{
+			YesButton.SetActive(true);
+			NextCard();
+			return;
+		}
+
         if (FlashCards.Count == 0) return;
 
         noPile.Add(currentCard);
         RemoveCurrentCard();
 
-        NextCard();
+        ShowAnswer();
     }
 
     private void RemoveCurrentCard()
     {
         FlashCards = FlashCards.Where(f => f.CardId != currentCard.CardId).ToList();
     }
+
+	private void ShowAnswer()
+	{
+		if(string.IsNullOrEmpty(currentCard.Answer))
+		{
+			print("no answer");
+			NextCard();
+		}
+		else
+		{
+			YesButton.SetActive(false);
+			print(currentCard.Answer);
+			displayText.text = currentCard.Answer;
+		}
+	}
 
 	private void NextCard()
     {
@@ -114,7 +140,7 @@ public class GamePlayController : MonoBehaviour
         
         currentCard = nextCard;
 
-        displayText.text = currentCard.Text;
+        displayText.text = currentCard.Question;
         remainingText.text = "Remaining: " + CardsRemaining() + " of " + total;
 		startTime = Time.time;
     }

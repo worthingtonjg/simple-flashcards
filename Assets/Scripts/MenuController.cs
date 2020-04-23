@@ -30,7 +30,7 @@ public class MenuController : MonoBehaviour
 
 	public int timerDefault = 5;
 
-	public Dictionary<string, string> PrebuiltDecks;
+	public Dictionary<string, List<string>> PrebuiltDecks;
 
 	private Dropdown prebuiltFlashCardsDropDown;
 
@@ -44,7 +44,7 @@ public class MenuController : MonoBehaviour
 
 	void Start()
     {
-        PrebuiltDecks = new Dictionary<string, string>();
+        PrebuiltDecks = new Dictionary<string, List<string>>();
 
         prebuiltFlashCardsDropDown = PrebuiltFlashCardsDropDown.GetComponent<Dropdown>();
         randomizeCheckbox = RandomizeCheckbox.GetComponent<Toggle>();
@@ -94,15 +94,17 @@ public class MenuController : MonoBehaviour
 		string selectedDeck = prebuiltFlashCardsDropDown.options[prebuiltFlashCardsDropDown.value].text;
 		SelectedDeck = selectedDeck;
 
-		string delimited = string.Empty;
+		string questionsDelimited = string.Empty;
+		string answersDelimited = string.Empty;
 
 		if(selectedDeck == "Custom")
 		{
-			delimited = customFlashCardsText.text;				
+			questionsDelimited = customFlashCardsText.text;				
 		}
 		else
 		{
-			delimited = PrebuiltDecks[selectedDeck];
+			questionsDelimited = PrebuiltDecks[selectedDeck][0];
+			answersDelimited =  PrebuiltDecks[selectedDeck][1];
 		}
 		
 		if(timerCheckbox.isOn && !string.IsNullOrEmpty(timerInput.text))
@@ -119,12 +121,31 @@ public class MenuController : MonoBehaviour
 		
 		print(TimerSeconds);
 
-		if(string.IsNullOrEmpty(delimited)) return;
+		if(string.IsNullOrEmpty(questionsDelimited)) return;
 		
 		string[] stringSeparators = new string[] { "\n" };
-		string[] lines = delimited.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
-		FlashCards = lines.Select(s => new FlashCard(s.Trim())).ToList();
-	
+		var questions = questionsDelimited.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries).ToList();
+		var answers = new List<string>();
+		
+		if(!string.IsNullOrEmpty(answersDelimited))
+		{
+			answers = answersDelimited.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries).ToList();
+		}
+		
+		FlashCards = new List<FlashCard>();
+		for(int i = 0; i < questions.Count; i++)
+		{
+			if(i < answers.Count)
+			{
+				FlashCards.Add(new FlashCard(questions[i].Trim(), answers[i].Trim()));
+				print($"q: {questions[i]} a: {answers[i]}");
+			}
+			else
+			{
+				FlashCards.Add(new FlashCard(questions[i], null));
+			}
+		}
+		
 		SceneManager.LoadScene("02GamePlay");
 	}
 
@@ -166,10 +187,10 @@ public class MenuController : MonoBehaviour
 
 	private void Custom()
 	{
-		PrebuiltDecks.Add("Custom", string.Empty);
+		PrebuiltDecks.Add("Custom", new List<string> { string.Empty });
 	}	
 
-		private void AppendResult(Dictionary<string, string> dictionary)
+	private void AppendResult(Dictionary<string, List<string>> dictionary)
 	{
 		foreach(var kvp in dictionary)
 		{
