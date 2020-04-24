@@ -90,9 +90,9 @@ public class GamePlayController : MonoBehaviour
 		if(FlashCards.Count == 0) return;
 
 		bool correct = true;
-		if(!string.IsNullOrEmpty(AnswerInput.text))
+		if(MathPanel.activeSelf)
 		{
-			if(int.Parse(AnswerInput.text) == int.Parse(currentCard.Answer.Split(' ').Last()))
+			if(!string.IsNullOrEmpty(AnswerInput.text) && int.Parse(AnswerInput.text) == int.Parse(currentCard.Answer.Split(' ').Last()))
 			{
 				correct = true;
 			}
