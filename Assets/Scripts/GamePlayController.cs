@@ -8,11 +8,13 @@ using System.Linq;
 public class GamePlayController : MonoBehaviour 
 {
 	public GameObject DisplayTextObject;
+	public InputField AnswerInput;
 	public GameObject RemainingTextObject;
 	public List<FlashCard> FlashCards;
 	public GameObject TimerParent;
 	public GameObject Timer;
 	public GameObject YesButton;
+	public GameObject MathPanel;
 
 	private Text displayText;
 	private Text remainingText;
@@ -73,18 +75,50 @@ public class GamePlayController : MonoBehaviour
 		SceneManager.LoadScene("01Menu");
 	}	
 
+	public void MathValue(int value)
+	{
+		AnswerInput.text += value.ToString();
+	}
+
+	public void ResetAnswer()
+	{
+		AnswerInput.text = string.Empty;
+	}
+
 	public void Yes()
 	{
 		if(FlashCards.Count == 0) return;
 
-		yesPile.Add(currentCard);
-		RemoveCurrentCard();
+		bool correct = true;
+		if(!string.IsNullOrEmpty(AnswerInput.text))
+		{
+			if(int.Parse(AnswerInput.text) == int.Parse(currentCard.Answer.Split(' ').Last()))
+			{
+				correct = true;
+			}
+			else
+			{
+				correct = false;
+			}
+		}
+
+		if(correct)
+		{
+			ResetAnswer();
+			yesPile.Add(currentCard);
+			RemoveCurrentCard();
 		
-		NextCard();
+			NextCard();
+		}
+		else
+		{
+			No();
+		}
 	}
 
 	public void No()
     {
+		ResetAnswer();
 		if(YesButton.activeSelf == false)
 		{
 			YesButton.SetActive(true);
@@ -114,6 +148,7 @@ public class GamePlayController : MonoBehaviour
 		}
 		else
 		{
+			MathPanel.SetActive(false);
 			YesButton.SetActive(false);
 			print(currentCard.Answer);
 			displayText.text = currentCard.Answer;
@@ -143,6 +178,16 @@ public class GamePlayController : MonoBehaviour
         displayText.text = currentCard.Question;
         remainingText.text = "Remaining: " + CardsRemaining() + " of " + total;
 		startTime = Time.time;
+
+		MathPanel.SetActive(false);
+		if(!string.IsNullOrEmpty(currentCard.Answer))
+		{
+			var tokens = currentCard.Answer.Trim().Split(' ');
+			if(int.TryParse(tokens.Last(), out int answer))
+			{
+				MathPanel.SetActive(true);
+			}
+		}
     }
 
 	private int CardsRemaining()

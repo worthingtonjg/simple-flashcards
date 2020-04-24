@@ -9,8 +9,13 @@ public class FlashCard
     
     public FlashCard(string question, string answer)
     {
-        Question = question;
-        Answer = answer;
+        Question = question.Trim();
+        
+        if(!string.IsNullOrEmpty(answer))
+        {
+            Answer = answer.Trim();
+        }
+
         CardId = Guid.NewGuid().ToString();
     }
 }
